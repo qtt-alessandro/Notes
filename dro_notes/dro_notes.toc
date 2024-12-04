@@ -1,2 +1,6 @@
-\contentsline {section}{\numberline {1}Wasserstein Definition}{1}{section.1}%
-\contentsline {section}{\numberline {2}References}{1}{section.2}%
+\contentsline {section}{\numberline {1}Problem Formulation}{1}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Conventional Formulation}{1}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}DeePC Formulation}{2}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Remark I: \textit {DeepC representation of predictor.}}{2}{subsubsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}Remark: \textit {Regularization in DeePC(rank-deficient Hankel matrices)}}{2}{subsubsection.1.2.2}%
+\contentsline {section}{\numberline {2}Stochastic DeePC}{3}{section.2}%

@@ -1,15 +1,21 @@
 \documentclass[12pt, a4paper]{article}
-
 \usepackage[utf8]{inputenc}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
 
-% Document information
-\title{Course Notes: [Subject Name]}
-\author{[Your Name]}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{\today}
+\fancyfoot[C]{Notes on DeePC and DRO}
+\fancyfoot[RO]{\thepage}
+
+\title{DeePC and DRO Notes}
+\author{Alessandro Quattrociocchi}
 \date{\today}
 
 \begin{document}
@@ -17,37 +23,144 @@
 \maketitle
 \tableofcontents
 
-Let's assume an LTI system affected by a certain noise. 
+\section{Problem Formulation}
+Consider a deterministic LTI system whose model is unknown. 
+\noindent Let $T_f \in \mathbb{Z}_{> 0}$ be the prediction horizon. Let $f_1 : \mathbb{R}^{mT_f} \rightarrow \mathbb{R}_{\geq0}$, and $f_2 : \mathbb{R}^{pT_f} \rightarrow \mathbb{R}_{\geq0}$ be a cost function on the future inputs and, respectively, outputs. We aim at finding a input sequece $\text{col}(u_t, \dots, u_{t+T_f-1}) \in \mathbb{R}^{mT_f}$, such that $\text{col}(y_t, \dots, y_{t+T_f-1}) \in \mathbb{R}^{pT_f}$ minimizes the cost $f_1 + f_2$, and the contraints satisfied, i.e., $u \in \mathcal{U}$ and $y \in \mathcal{Y}$, with $\mathcal{U} \subseteq \mathcal{R}^{mT_f}$ and $\mathcal{Y} \subseteq \mathcal{R}^{pT_f}$.
+
+\subsection{Conventional Formulation}
+Using conventional input output state space representation. 
+\begin{align} \label{eq:conventional}
+    \min_{u,y,x} \quad & f_1(u) +f_2(y) \notag\\
+    \text{s.t.} \quad & \forall k \in {\{0, \dots, T_f -1\}}\notag\\
+    \quad & {x}_{k+1} = Ax_k + Bu_k \notag\\
+    \quad & {y}_{k} = Cx_k + Du_k \notag\\
+    & x_0 = \hat{x}_t \notag\\
+    & u \in \mathcal{U}, \: y \in \mathcal{Y} 
+\end{align}
+
+\subsection{DeePC Formulation}
+From data we contruct $\hat{U}_p, \hat{U}_f, \hat{Y}_p$, $\hat{Y}_f$.
+\begin{align}
+    \min_{g} \quad & f_1(u) + f_2(y) \notag\\[0.2cm]
+    \text{s.t.} 
+    &\begin{bmatrix} 
+        \hat{U}_p \\ 
+        \hat{Y}_p \\ 
+        \hat{U}_f \\ 
+        \hat{Y}_f 
+        \end{bmatrix}g = \begin{bmatrix} 
+            u_{\text{ini}} \\ 
+            y_{\text{ini}}\\ 
+            u \notag \\ 
+            y
+            \end{bmatrix}\\[0.2cm]
+            & u \in \mathcal{U}, \: y \in \mathcal{Y} 
+\end{align}
+
+\begin{itemize}
+    \item \( U_p, Y_p \) represent the past input-output trajectories.
+    \item \( U_f, Y_f \) represent the future input-output trajectories.
+\end{itemize}
+
+\subsubsection{Remark I: \textit{DeepC representation of predictor.}}
+
+\begin{align}
+    \begin{bmatrix}
+        u_{\text{ini}} \\
+        y_{\text{ini}} \\
+        u \\
+        y
+        \end{bmatrix}
+        = H(w) g,  \quad \text{with} \quad 
+            H(w) =
+            \begin{bmatrix}
+            U_p \\
+            Y_p \\
+            U_f \\
+            Y_f
+            \end{bmatrix}
+\end{align}
+
+where \( H(w) \) is the suitably partitioned Hankel matrix, or 
+\begin{align}
+    y = Y_f g
+\end{align}
+where \( g \) is computed from:
+\[
+\begin{bmatrix}
+U_p \\
+Y_p \\
+U_f
+\end{bmatrix} g = 
+\begin{bmatrix}
+u_{\text{ini}} \\
+y_{\text{ini}} \\
+u
+\end{bmatrix}.
+\]
+
+\noindent The explicit solution for \( y \) is the superposition of a particolar solition and the homogenous term:
+
+\[
+y = Y_f \cdot \left(
+\begin{bmatrix} U_p \\ Y_p \\ U_f \end{bmatrix}^+
+\begin{bmatrix}
+u_{\text{ini}} \\
+y_{\text{ini}} \\
+u
+\end{bmatrix} + \text{ker} \left( \begin{bmatrix} U_p \\ Y_p \\ U_f \end{bmatrix} \right) \right),
+\]
+where \( \begin{bmatrix} U_p \\ Y_p \\ U_f \end{bmatrix}^+  \) is the pseudoinverse of the Hankel matrix, and \( \text{ker} \) represents the kernel of the matrix.
+
+
+\subsubsection{Remark: \textit{Regularization in DeePC(rank-deficient Hankel matrices)}}
+
+When the Hankel matrix \( H \) is rank-deficient (i.e., \( H \) has more columns than rows), there are infinitely many solutions \( g \) that satisfy the system equation:
+\begin{align}
+    H g &= 
+    \begin{bmatrix}
+        u_{\text{ini}} \\
+        y_{\text{ini}} \\
+        u
+    \end{bmatrix}.
+\end{align}
+
+\noindent To find a noise-robust prediction, the Projection Regularizer is introduced. The regularizer penalizes the portion of \( g \) that lies in the nullspace of \( H \). This is achieved by minimizing:
+\begin{align}
+    \| (I - \Pi) g \|_2^2,
+\end{align}
+where:
+\begin{itemize}
+    \item \( \Pi \) is the orthogonal projection matrix onto the row space of \( H \),
+    \item \( (I - \Pi) g \) isolates the component of \( g \) in \( \text{ker}(H) \), the nullspace of \( H \).
+\end{itemize}
+
+This ensures that the computed \( g \) is the smallest norm solution to:
+\begin{align}
+    y &= Y_f g.
+\end{align}
+
+In the noiseless case (\( \lambda_s = 0 \)) with regularization constant \( \lambda_p \geq 0 \), the optimization problem ensures that both \( u \) and \( y \) match the reference trajectory \( u_r, y_r \), making it beneficial to use the regularizer with a sufficiently large \( \lambda_p \).
+
+\section{Stochastic DeePC}
+Following the formulation in \cite{huang2021decentralized}, we now extend the DeePC definition of the unknow LTI system by considering a disturbance vector $w_t \in \mathbb{R}^q$, such as: 
 
 \begin{align}
     \begin{cases}
-        x_{t+1} &= Ax_t + Bu_t + Ew_t \\
-        y_t &= Cx_t + Du_t + Fw_t
+    x_{t+1} = Ax_t + Bu_t + Ew_t \\
+    y_t = Cx_t + Du_t + Fw_t
     \end{cases}
 \end{align}
 
-
+where $E \in \mathbb{R}^{n \times q}$ and $F \in \mathbb{R}^{p \times q}$.
+Therefore, the system is subject to an \textbf{unknow} and \textbf{uncontrollable} disturbance, whose past trajectory can be measured but whose future evolutions are unknown. Similar to $u^d$ and $y^d$, we can build the Hankel matrix of the disturbance $\mathcal{H}_{T_{ini + N}}$, splitted as follows: 
 
 \begin{align}
-    y_t^{\text{true}} - y_t &= \epsilon_t \\
-    \text{where } \epsilon_t &= f(\eta_t, \varepsilon_t)
+    \mathcal{H} 
 \end{align}
 
 
 
-
-
-
-\section{Wasserstein Definition}
-Let $M$ be the \cite{chen2024data}
-
-
-
-
-
-
-
-\section{References}
 \bibliographystyle{plain} 
 \bibliography{references.bib}
 

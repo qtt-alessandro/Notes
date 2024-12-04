@@ -1,8 +1,8 @@
 \begin{thebibliography}{1}
 
-\bibitem{chen2024data}
-Zhi Chen, Daniel Kuhn, and Wolfram Wiesemann.
-\newblock Data-driven chance constrained programs over wasserstein balls.
-\newblock {\em Operations Research}, 72(1):410--424, 2024.
+\bibitem{huang2021decentralized}
+Linbin Huang, Jeremy Coulson, John Lygeros, and Florian D{\"o}rfler.
+\newblock Decentralized data-enabled predictive control for power system oscillation damping.
+\newblock {\em IEEE Transactions on Control Systems Technology}, 30(3):1065--1077, 2021.
 
 \end{thebibliography}
