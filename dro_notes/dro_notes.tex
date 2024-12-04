@@ -214,6 +214,121 @@ The objective function formulated in Eq.\ref{eq:conventional}, is therefore refo
 \end{align}
 
 
+\subsection{Wasserstein Distance}
+Definition copied from \cite{coulson2021distributionally},
+
+We now introduce the \textit{Wasserstein ambiguity set} centred around the so-called \textit{empirical distribution}, i.e., $\mathbb{\hat{P}} = \frac{1}{N}\sum_{i=1}^{N}\delta_{\xi}$ \cite{mohajerin2018data} where $\delta_{\xi}$ is the kroneker delta, poiting a discrete sampling from the true unknow distribution. 
+
+\noindent  $\mathcal{M}(\Xi)$ being the set of all distributions $\mathbb{Q}$ supported on $\Xi$, such that $\mathbb{E}_\mathbb{Q}[\|\xi\|_r] < \infty$, where $\|\cdot\|_r$ is the $r$-norm for some $r \in [1,\infty]$.
+
+
+The \textit{Wasserstein metric} $\text{d}_\text{W}: \mathcal{M}(\Xi) \times \mathcal{M}(\Xi) \to \mathbb{R}_{\geq 0}$ is defined as
+
+\begin{align}
+    \text{d}_\text{W}(\mathbb{Q}_1, \mathbb{Q}_2) := \inf_{\Pi} \left\{\int_{\Xi^2} \|\xi_1 - \xi_2\|_r \Pi(d\xi_1, d\xi_2)\right\}    
+\end{align}
+
+
+\noindent where $\Pi$ is a joint distribution of $\xi_1$ and $\xi_2$ with marginal distributions $\mathbb{Q}_1 \in \mathcal{M}(\Xi)$ and $\mathbb{Q}_2 \in \mathcal{M}(\Xi)$, respectively.
+The Wasserstein metric can be viewed as a distance between probability distributions, where the distance is calculated via an optimal mass transport plan $\Pi$.
+
+\subsection{Objective Function Reformulation}
+By using the distributionally robust linear regression theorem [Theorem 4, II] \cite{shafieezadeh2019regularization}, the objective function can be refomulated as follows: 
+\begin{align}
+    \min_{g} \sup_{\mathbb{Q} \in \hat{\mathcal{P}}}& \mathbb{E}_\mathbb{Q} \left[f_1(\hat{U}_\text{f}g) + f_2(Y_\text{f}g))\right] = \min_{g, \tau, s_i} f_1(\hat{U}_{\text{f}}\;g) + \frac{1}{N}\sum_{i=1}^{N}f_2(\hat{Y}_{\text{p}}^{(i)}g) + L_{\text{obj}}\epsilon ||g||_{\text{r,*}}\notag \\[0.5cm] 
+\end{align}
+
+
+\subsection{Constraint Reformulation}
+\begin{align}
+    \sup_{\mathbb{Q} \in B_\epsilon(\hat{\mathbb{P}}_N)} & \text{CVaR}_{1-\alpha}^{\mathbb{Q}}(h(W_\text{f}\;g)) \leq 0 \rightarrow\sup_{\mathbb{Q} \in B_\epsilon(\hat{\mathbb{P}}_N)} \inf_{\tau \in \mathbb{R}} -\tau\alpha + \mathbb{E}_\mathbb{Q}[(\ell(g,\xi) + \tau)_+] \leq 0 \\[0.5cm]
+    &-\tau\alpha + L_\text{con}\epsilon\|g\|_{r,*} + \frac{1}{N}\sum_{i=1}^N s_i \leq 0 \\
+    &\tau + h(\hat{W}_\text{f}^{(i)}g) \leq s_i \quad \forall i \leq N \\
+    &s_i \geq 0 \quad \forall i \leq N
+\end{align}
+
+
+
+\subsection{DRO Chance Constrained DeePC- Tractable Reformulation}
+
+\begin{align}
+    \min_{g,\tau,s_i} & f_1(\hat{U}_\text{f}\;g)  + \frac{1}{N}\sum_{i=1}^N \left(f_2(\hat{Y}_\text{f}^{(i)}g)\right) + L_\text{obj}\epsilon\|g\|_{r,*} \\
+     \text{s.t.} \quad & \hat{U}_\text{P}g = \hat{u}_\text{ini} \\
+     & \hat{Y}_\text{P}g = \hat{y}_\text{ini} \\
+     & \hat{U}_\text{f}g \in \mathcal{U} \\
+     & \hat{Y}_\text{f}g \in \mathcal{Y} \\
+     & -\tau\alpha + L_\text{con}\epsilon\|g\|_{r,*} + \frac{1}{N}\sum_{i=1}^N s_i \leq 0 \\
+     & \tau + h(\hat{W}_\text{f}^{(i)}g) \leq s_i \quad \\
+     & \quad s_i \geq 0 \quad \forall i \leq N
+\end{align}
+
+
+\newpage
+
+\section*{Appendix}
+
+By definition of CVaR
+
+\begin{align}
+    \text{CVaR}_{1-\alpha}^{\mathbb{P}}(h(y)) \leq 0 \Longleftrightarrow \inf_{\tau \in \mathbb{R}} -\tau\alpha + \mathbb{E}_\mathbb{P}[(h(y) + \tau)_+] \leq 0.
+\end{align}
+
+This can be shown by multiplying the definition of CVaR by $\alpha > 0$ and changing $\tau$ to $-\tau$. Letting $\ell(g,\xi) := h(\xi_{p(T_\text{ini}+1)}^{\top}g,\ldots,\xi_{p(T_\text{ini}+T_f)}^{\top}g)$, the constraint $g \in G_\text{CVaR}$ is equivalent to $g$ satisfying
+
+\begin{equation}
+\sup_{\mathbb{Q} \in B_\epsilon(\hat{\mathbb{P}}_N)} \inf_{\tau \in \mathbb{R}} -\tau\alpha + \mathbb{E}_\mathbb{Q}[(\ell(g,\xi) + \tau)_+] \leq 0
+\end{equation}
+
+We have
+
+\begin{equation}
+\sup_{\mathbb{Q} \in B_\epsilon(\hat{\mathbb{P}}_N)} \inf_{\tau \in \mathbb{R}} -\tau\alpha + \mathbb{E}_\mathbb{Q}[(\ell(g,\xi) + \tau)_+] \leq \inf_{\tau \in \mathbb{R}} -\tau\alpha + \sup_{\mathbb{Q} \in B_\epsilon(\hat{\mathbb{P}}_N)} \mathbb{E}_\mathbb{Q}[(\ell(g,\xi) + \tau)_+] 
+\end{equation}
+
+
+by the max-min inequality. From Lemma A.1 we have
+
+\begin{align}
+    \sup_{\mathbb{Q} \in B_\epsilon(\hat{\mathbb{P}}_N)} \mathbb{E}_\mathbb{Q}[(\ell(g,\xi) + \tau)_+]
+\end{align}
+
+\begin{align}
+    = \inf_{\lambda \geq 0} \lambda\epsilon + \frac{1}{N}\sum_{i=1}^N \sup_{\xi \in \Xi}((\ell(g,\xi) + \tau)_+ - \lambda\|\xi - \hat{\xi}^{(i)}\|_r)
+\end{align}
+
+Recalling that $\ell(g,\xi) = h(\xi_{p(T_\text{ini}+1)}^{\top}g,\ldots,\xi_{p(T_\text{ini}+T_f)}^{\top}g)$ and using Lemma A.2 gives
+
+\begin{align}
+    \sup_{\mathbb{Q} \in B_\epsilon(\hat{\mathbb{P}}_N)} \mathbb{E}_\mathbb{Q}[(\ell(g,\xi) + \tau)_+] \leq \begin{cases} 
+        \inf_{\lambda \geq 0} \lambda\epsilon + \frac{1}{N}\sum_{i=1}^N (\ell(g,\hat{\xi}^{(i)}) + \tau)_+ & \text{if } L_\text{con}\|g\|_{r,*} \leq \lambda \\
+        \infty, & \text{otherwise.}
+        \end{cases}
+\end{align}
+
+Hence, by resolving the inf and resorting to an epigraph formulation, we arrive at
+
+\begin{align}
+    &\inf_{\tau \in \mathbb{R}} -\tau\alpha + \sup_{\mathbb{Q} \in B_\epsilon(\hat{\mathbb{P}}_N)} \mathbb{E}_\mathbb{Q}[(\ell(g,\xi) + \tau)_+] \\
+    &\leq \begin{cases} 
+        \inf_{\tau \in \mathbb{R}, s_i \in \mathbb{R}} -\tau\alpha + \epsilon L_\text{con}\|g\|_{r,*} + \frac{1}{N}\sum_{i=1}^N s_i \\
+        \text{s.t. } \tau + \ell(g,\hat{\xi}^{(i)}) \leq s_i \\
+        s_i \geq 0 \\
+        \forall i \leq N
+        \end{cases}
+\end{align}
+
+Substituting the definition for $\ell$ and recalling from (13) that we wish for the right hand side of the above inequality to be nonnegative gives
+
+\begin{align}
+    \begin{cases}
+        \inf_{\tau,s_i} -\tau\alpha + L_\text{con}\epsilon\|g\|_{r,*} + \frac{1}{N}\sum_{i=1}^N s_i \leq 0 \\
+        g \mid \tau + h(\hat{Y}_\text{f}^{(i)}g) \leq s_i \\
+        s_i \geq 0 \\
+        \forall i \leq N
+        \end{cases} \subseteq G_\text{CVaR}.
+\end{align}
+
+
 \bibliographystyle{plain} 
 \bibliography{references.bib}
 

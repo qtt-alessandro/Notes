@@ -10,4 +10,14 @@ Linbin Huang, Jeremy Coulson, John Lygeros, and Florian D{\"o}rfler.
 \newblock Decentralized data-enabled predictive control for power system oscillation damping.
 \newblock {\em IEEE Transactions on Control Systems Technology}, 30(3):1065--1077, 2021.
 
+\bibitem{mohajerin2018data}
+Peyman Mohajerin~Esfahani and Daniel Kuhn.
+\newblock Data-driven distributionally robust optimization using the wasserstein metric: Performance guarantees and tractable reformulations.
+\newblock {\em Mathematical Programming}, 171(1):115--166, 2018.
+
+\bibitem{shafieezadeh2019regularization}
+Soroosh Shafieezadeh-Abadeh, Daniel Kuhn, and Peyman~Mohajerin Esfahani.
+\newblock Regularization via mass transportation.
+\newblock {\em Journal of Machine Learning Research}, 20(103):1--68, 2019.
+
 \end{thebibliography}

@@ -4,3 +4,7 @@
 \contentsline {subsubsection}{\numberline {1.2.1}Remark I: \textit {DeepC representation of predictor.}}{2}{subsubsection.1.2.1}%
 \contentsline {subsubsection}{\numberline {1.2.2}Remark: \textit {Regularization in DeePC(rank-deficient Hankel matrices)}}{2}{subsubsection.1.2.2}%
 \contentsline {section}{\numberline {2}Stochastic DeePC Formulation}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Wasserstein Distance}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Objective Function Reformulation}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Constraint Reformulation}{5}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}DRO Chance Constrained DeePC- Tractable Reformulation}{5}{subsection.2.4}%
