@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex dro_notes"] 1733327615.70142 "dro_notes.aux" "dro_notes.bbl" "dro_notes" 1733328005.36389 0
+["bibtex dro_notes"] 1733333008.20654 "dro_notes.aux" "dro_notes.bbl" "dro_notes" 1733333302.0157 0
   "./references.bib" 1733327162.42163 2295 1235b7e57e43d210083607d0834acfa3 ""
   "/usr/local/texlive/2024/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "dro_notes.aux" 1733328005.07527 1198 85f604334b263d76b133324df3602f8e "pdflatex"
+  "dro_notes.aux" 1733333301.73963 1338 512bf40af533faacadf27bf05439f3a5 "pdflatex"
   (generated)
   "dro_notes.bbl"
   "dro_notes.blg"
   (rewritten before read)
-["pdflatex"] 1733328004.47124 "/Users/alessandroquattrociocchi/Git/Notes/dro_notes/dro_notes.tex" "dro_notes.pdf" "dro_notes" 1733328005.36404 0
-  "/Users/alessandroquattrociocchi/Git/Notes/dro_notes/dro_notes.tex" 1733328004.3236 5674 b3554f572a3a1d0999a26be839c50fe7 ""
+["pdflatex"] 1733333301.17851 "/Users/alessandroquattrociocchi/Git/Notes/dro_notes/dro_notes.tex" "dro_notes.pdf" "dro_notes" 1733333302.01585 0
+  "/Users/alessandroquattrociocchi/Git/Notes/dro_notes/dro_notes.tex" 1733333300.99404 7814 aa550bdd53c29f1ec0b6f4e3ddcbfaf7 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -105,11 +105,11 @@
   "/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1732867925.16726 5467645 128b85b7cde5f5edc5cb7f1dd7ff8736 ""
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1732867916 8221437 f3f1fd85e2a94114d6f1ffd13e664f5b ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
-  "dro_notes.aux" 1733328005.07527 1198 85f604334b263d76b133324df3602f8e "pdflatex"
-  "dro_notes.bbl" 1733327615.81406 336 7a92d66d3b9a88d96dcb9799d3d0e254 "bibtex dro_notes"
-  "dro_notes.out" 1733328005.07568 1297 20cd813702e918ae4987dab801c61ea9 "pdflatex"
-  "dro_notes.tex" 1733328004.3236 5674 b3554f572a3a1d0999a26be839c50fe7 ""
-  "dro_notes.toc" 1733328005.07589 599 309123813c99996ce4c9bb503e7d77a9 "pdflatex"
+  "dro_notes.aux" 1733333301.73963 1338 512bf40af533faacadf27bf05439f3a5 "pdflatex"
+  "dro_notes.bbl" 1733333008.30816 596 937e6df2096810d4e4a09d9b1d86f9ab "bibtex dro_notes"
+  "dro_notes.out" 1733333301.74005 1433 89567343c199cd07ae5bf7737bd9dab3 "pdflatex"
+  "dro_notes.tex" 1733333300.99404 7814 aa550bdd53c29f1ec0b6f4e3ddcbfaf7 ""
+  "dro_notes.toc" 1733333301.74027 625 88dca7d4ddfdbbd748dbaed82b05fcfb "pdflatex"
   (generated)
   "dro_notes.aux"
   "dro_notes.log"

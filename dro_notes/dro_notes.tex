@@ -38,7 +38,7 @@ Using conventional input output state space representation.
     & u \in \mathcal{U}, \: y \in \mathcal{Y} 
 \end{align}
 
-\subsection{DeePC Formulation}
+\subsection{Deterministic DeePC Formulation}
 From data we contruct $\hat{U}_p, \hat{U}_f, \hat{Y}_p$, $\hat{Y}_f$.
 \begin{align}
     \min_{g} \quad & f_1(u) + f_2(y) \notag\\[0.2cm]
@@ -142,7 +142,7 @@ This ensures that the computed \( g \) is the smallest norm solution to:
 
 In the noiseless case (\( \lambda_s = 0 \)) with regularization constant \( \lambda_p \geq 0 \), the optimization problem ensures that both \( u \) and \( y \) match the reference trajectory \( u_r, y_r \), making it beneficial to use the regularizer with a sufficiently large \( \lambda_p \).
 
-\section{Stochastic DeePC}
+\section{Stochastic DeePC Formulation}
 Following the formulation in \cite{huang2021decentralized}, we now extend the DeePC definition of the unknow LTI system by considering a disturbance vector $w_t \in \mathbb{R}^q$, such as: 
 
 \begin{align}
@@ -155,10 +155,63 @@ Following the formulation in \cite{huang2021decentralized}, we now extend the De
 where $E \in \mathbb{R}^{n \times q}$ and $F \in \mathbb{R}^{p \times q}$.
 Therefore, the system is subject to an \textbf{unknow} and \textbf{uncontrollable} disturbance, whose past trajectory can be measured but whose future evolutions are unknown. Similar to $u^d$ and $y^d$, we can build the Hankel matrix of the disturbance $\mathcal{H}_{T_{ini + N}}$, splitted as follows: 
 
+\begin{equation}
+    \begin{bmatrix}
+    W_\text{P} \\
+    W_\text{F}
+    \end{bmatrix} := \mathcal{H}_{T_\text{ini}+N}(w^\text{d})
+    \tag{14}
+    \end{equation}
+
+\noindent with  $W_\text{P} \in \mathbb{R}^{qT_\text{ini} \times H_c}$ and $W_\text{F} \in \mathbb{R}^{qN \times H_c}$. Therefore, we assume exist $g \in \mathbb{R}^{H_c}$, so that: 
+
 \begin{align}
-    \mathcal{H} 
+        \begin{bmatrix}
+        U_\text{P} \\
+        W_\text{P} \\
+        Y_\text{P} \\
+        U_\text{F} \\
+        W_\text{F} \\
+        Y_\text{F}
+        \end{bmatrix} g =
+        \begin{bmatrix}
+        u_\text{ini} \\
+        w_\text{ini} \\
+        y_\text{ini} \\
+        u \\
+        w \\
+        y
+        \end{bmatrix}
 \end{align}
 
+\noindent Unlike \cite{huang2021decentralized}, we DO NOT assume $w_{t} \in [\underline{w}
+, \overline{w}]^q$. Why this? We assume that in optimal scheduling problems, a time series forecasting model is always subject to an error which in very few toy examples converges to white noise. Therefore, we assume the general case where the error term distribution $w_t$ is not known a priori. 
+Therefore, we assume $\hat{W}_\text{P}$ and $\hat{W}_\text{F}$ realizations of random variables $W_\text{P}$ and $W_\text{F}$. Reformulating from \cite{coulson2021distributionally}, we define $\xi = (\xi_{1}^T, \dots, \xi_{p, (T_{\text{ini}}+T_{\text{f}})})$, with $\xi_i$ denoting the $i$th rows $(W_{\text{p}}^T, W_{\text{f}}^T)$. 
+
+\textbf{Objective Function}
+
+The objective function formulated in Eq.\ref{eq:conventional}, is therefore reformulated into its robust conterpart, namely: 
+
+\begin{align}
+   \min_{g} \sup_{\mathbb{Q} \in \hat{\mathcal{P}}}& \mathbb{E}_\mathbb{Q} \left[f_1(\hat{U}_\text{f}g) + f_2(Y_\text{f}g))\right] \notag \\[0.5cm]
+   \text{s.t.} &\begin{bmatrix}
+    U_\text{P} \\
+    W_\text{P} \\
+    Y_\text{P} \\
+    U_\text{F} \\
+    W_\text{F} \\
+    Y_\text{F}
+    \end{bmatrix} g =
+    \begin{bmatrix}
+    u_\text{ini} \\
+    w_\text{ini} \\
+    y_\text{ini} \\
+    u \\
+    w \\
+    y
+    \end{bmatrix} \notag \\[0.5cm]
+   \sup_{\mathbb{Q} \: \in \hat{\mathcal{P}}}& \text{CVaR}_{1-\alpha}^{\mathbb{Q}}(h(y)) \leq 0.
+\end{align}
 
 
 \bibliographystyle{plain} 

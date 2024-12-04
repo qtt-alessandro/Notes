@@ -1,5 +1,10 @@
 \begin{thebibliography}{1}
 
+\bibitem{coulson2021distributionally}
+Jeremy Coulson, John Lygeros, and Florian D{\"o}rfler.
+\newblock Distributionally robust chance constrained data-enabled predictive control.
+\newblock {\em IEEE Transactions on Automatic Control}, 67(7):3289--3304, 2021.
+
 \bibitem{huang2021decentralized}
 Linbin Huang, Jeremy Coulson, John Lygeros, and Florian D{\"o}rfler.
 \newblock Decentralized data-enabled predictive control for power system oscillation damping.
